@@ -14,7 +14,8 @@ class PodSpecBuilder
               :source_files,
               :source,
               :dependencies,
-              :spm_local_dependencies
+              :spm_local_dependencies,
+              :static_framework
 
 
   def initialize
@@ -32,15 +33,18 @@ class PodSpecBuilder
     @source_files = nil
     @source = nil
     @spm_local_dependencies = []
+    @static_framework = false
   end
 
   def build_pod_spec_string
     [start_of_spec,
      podspec_content_setting_string,
+     static_framework_string,
      generate_dependencies(@dependencies),
+     subscpecs_string,
      generate_local_spm_dependencies(@spm_local_dependencies),
      end_of_spec
-    ].reject { |s| s.empty? }.join("\n")
+    ].compact.reject { |s| s.empty? }.join("\n")
   end
 
   def add_dependency(name, version = nil)
@@ -72,21 +76,21 @@ class PodSpecBuilder
     hash = {}
     instance_variables.reject { |var| exclude(var) }
                       .each { |var| hash[var.to_s.delete("@")] = instance_variable_get(var) }
-
     hash.compact.reject { |_k, v| v.empty? }
   end
 
-  
+  def static_framework_string
+    return "\ts.static_framework = true" if @static_framework
+    nil
+  end
   def exclude(variable)
-    %w[@subspecs @dependencies @spm_local_dependencies].include? variable.to_s
+    %w[@subscpecs @dependencies @spm_local_dependencies @static_framework].include? variable.to_s
   end
   def content(items)
     items.reject(&:empty?).reduce(String.new) do |content, item|
       content += "#{item}\n"
     end
   end
-
-
 
   def subscpecs_string
     @subscpecs.reduce(String.new) do |content, subscpec|
@@ -95,16 +99,14 @@ class PodSpecBuilder
   end
 
   def subspec_string(sub)
-    "
-    s.subspec '#{sub[:name]}' do |s|
-      #{generate_dependencies(sub[:dependencies])}
-    end
-   "
+    "\n\ts.subspec '#{sub[:name]}' do |s|"\
+    "\n\t\ts.source_files = #{sub[:local_files]}#{generate_dependencies(sub[:dependencies],"\t")}" \
+    "\n\tend"
   end
 
-  def generate_dependencies(dependencies)
+  def generate_dependencies(dependencies, allignment = "")
     dependencies.reduce(String.new) do |content, dep|
-      dependency = "\n\ts.dependency '#{dep[:name]}'"
+      dependency = "\n#{allignment}\ts.dependency '#{dep[:name]}'"
       vers = dep[:version] ? "'#{dep[:version]}'" : nil
       out = [dependency, vers].compact.join(", ~>")
       content += "#{out}"

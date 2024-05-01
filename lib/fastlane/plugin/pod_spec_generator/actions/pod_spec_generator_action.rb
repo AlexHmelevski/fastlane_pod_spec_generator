@@ -25,6 +25,11 @@ module Fastlane
         builder.platform = params[:platform].reduce([]) do |content, pair|
           content += pair
         end
+        (params[:subspecs]).each do |dep|
+          puts(dep)
+          builder.add_subspec(dep[:name], dep[:local_files], dep[:dependencies])
+        end
+        builder.static_framework = params[:static_framework]
 
         output = builder.build_pod_spec_string
         File.write("#{params[:folder]}/#{params[:name]}.podspec", output)
@@ -118,7 +123,17 @@ module Fastlane
                                        description: "Local spm dependencies",
                                        default_value: [],
                                        optional: true,
-                                       type: Array)
+                                       type: Array),
+          FastlaneCore::ConfigItem.new(key: :subspecs,
+                                       description: "Additional subspecs",
+                                       default_value: [],
+                                       optional: true,
+                                       type: Array),
+          FastlaneCore::ConfigItem.new(key: :static_framework,
+                                       description: "Static Framework",
+                                       default_value: false,
+                                       optional: true,
+                                       is_string: false)
 
         ]
       end
