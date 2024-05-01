@@ -107,7 +107,3 @@ class Pod::Podfile
     end
   end
 end
-
-# class Pod::Podfile
-#   prepend PodFileExtension
-# end
