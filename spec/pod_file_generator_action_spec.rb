@@ -22,6 +22,7 @@ describe Fastlane::Actions::PodFileGeneratorAction do
 
     it 'Generates local podfile' do
       expected = "use_frameworks!\n" \
+                 "platform: [:ios, \"13.4\"]\n" \
                  "plugin 'fastlane-plugin-pod_spec_generator'\n" \
                  "target 'MyTarget' do\n" \
                  "\tpod 'Networking', ~> '1,2,3'\n\n" \
@@ -33,6 +34,7 @@ describe Fastlane::Actions::PodFileGeneratorAction do
                 use_frameworks: true,
                 apply_local_spm_fix: true,
                 folder: folder_path,
+                platform: {ios: "13.4"},
                 targets: [
                   {
                     name: "MyTarget",

@@ -3,16 +3,19 @@
 class PodFileBuilder
   attr_writer :use_frameworks,
               :targets,
-              :apply_local_spm_fix
+              :apply_local_spm_fix,
+              :platform
 
   def initialize
     @use_frameworks = true
     @targets = []
     @apply_local_spm_fix = false
+    @platform = nil
   end
 
   def build_pod_file_string
     [use_frameworks_string,
+     platform,
      apply_local_spm_fix_string,
      targets_string,
     ].compact
@@ -27,6 +30,10 @@ class PodFileBuilder
     end
   end
 
+  def platform
+    return nil unless @platform
+    "platform #{@platform.join(", ")}"
+  end
   def create_target_string(target)
     start = "target '#{target[:name]}' do"
     dependencies = target[:dependencies].map do |dependency|
@@ -42,6 +49,7 @@ class PodFileBuilder
 
   def apply_local_spm_fix_string
     return "plugin 'fastlane-plugin-pod_spec_generator'" if @apply_local_spm_fix
+
     return nil
   end
   def use_frameworks_string
