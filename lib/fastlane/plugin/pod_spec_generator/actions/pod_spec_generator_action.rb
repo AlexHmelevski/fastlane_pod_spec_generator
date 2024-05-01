@@ -26,7 +26,6 @@ module Fastlane
           content += pair
         end
         (params[:subspecs]).each do |dep|
-          puts(dep)
           builder.add_subspec(dep[:name], dep[:local_files], dep[:dependencies])
         end
         builder.static_framework = params[:static_framework]
