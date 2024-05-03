@@ -25,11 +25,11 @@ module Fastlane
         builder.platform = params[:platform].reduce([]) do |content, pair|
           content += pair
         end
-        (params[:subspecs]).each do |dep|
+        (params[:subspecs] || []).each do |dep|
           builder.add_subspec(dep[:name], dep[:local_files], dep[:dependencies])
         end
         builder.static_framework = params[:static_framework]
-
+        builder.vendored_frameworks = params[:vendored_frameworks]
         output = builder.build_pod_spec_string
         File.write("#{params[:folder]}/#{params[:name]}.podspec", output)
 
@@ -94,8 +94,7 @@ module Fastlane
                                        type: Hash),
           FastlaneCore::ConfigItem.new(key: :author,
                                        description: "Author",
-                                       optional: true,
-                                       type: Hash),
+                                       optional: true),
           FastlaneCore::ConfigItem.new(key: :source_files,
                                        description: "Source Files",
                                        default_value: [],
@@ -132,7 +131,13 @@ module Fastlane
                                        description: "Static Framework",
                                        default_value: false,
                                        optional: true,
-                                       is_string: false)
+                                       is_string: false),
+          FastlaneCore::ConfigItem.new(key: :vendored_frameworks,
+                                       description: "Vendored Framework",
+                                       default_value: nil,
+                                       optional: true,
+                                       type: String)
+
 
         ]
       end

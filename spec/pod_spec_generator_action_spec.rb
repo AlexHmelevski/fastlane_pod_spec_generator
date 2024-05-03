@@ -13,6 +13,7 @@ describe Fastlane::Actions::PodSpecGeneratorAction do
       "\n\ts.source_files = [\"SourceCode/**/*.{swift}\", \"SourceCode/**/*.{h}\"]" \
       "\n\ts.summary = 'Summary'" \
       "\n\ts.swift_version = '5.9'" \
+      "\n\ts.vendored_frameworks = 'Framework'"\
       "\n\ts.version = 'Version'" \
       "\n" \
       "\n\ts.dependency 'Dependency1'" \
@@ -57,7 +58,8 @@ describe Fastlane::Actions::PodSpecGeneratorAction do
                 ],
                 spm_local_dependencies: [
                   {path: "mypath", products: ["SPM1"]}
-                ]
+                ],
+                vendored_frameworks: "Framework"
       })
       expect(read_file_data).to eq(expected_settings_string)
     end

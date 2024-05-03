@@ -15,7 +15,8 @@ class PodSpecBuilder
               :source,
               :dependencies,
               :spm_local_dependencies,
-              :static_framework
+              :static_framework,
+              :vendored_frameworks
 
 
   def initialize
@@ -34,6 +35,7 @@ class PodSpecBuilder
     @source = nil
     @spm_local_dependencies = []
     @static_framework = false
+    @vendored_frameworks = nil
   end
 
   def build_pod_spec_string
