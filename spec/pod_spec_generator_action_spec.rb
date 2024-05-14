@@ -17,7 +17,7 @@ describe Fastlane::Actions::PodSpecGeneratorAction do
       "\n\ts.version = 'Version'" \
       "\n" \
       "\n\ts.dependency 'Dependency1'" \
-      "\n\ts.dependency 'Dependency2', ~>'1.0.0'" \
+      "\n\ts.dependency 'Dependency2', = 1.0.0" \
       "\n"\
       "\n\ts.local_spm_dependency(path: 'mypath', products: [\"SPM1\"])"\
       "\nend"
@@ -54,7 +54,7 @@ describe Fastlane::Actions::PodSpecGeneratorAction do
                 source_files: %w[SourceCode/**/*.{swift} SourceCode/**/*.{h}],
                 dependencies: [
                   { name: "Dependency1" },
-                  { name: "Dependency2", version: "1.0.0" }
+                  { name: "Dependency2", version: "= 1.0.0" }
                 ],
                 spm_local_dependencies: [
                   {path: "mypath", products: ["SPM1"]}

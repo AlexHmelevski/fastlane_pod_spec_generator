@@ -18,7 +18,7 @@ RSpec.describe PodSpecBuilder do
       "\n\ts.static_framework = true" \
       "\n" \
       "\n\ts.dependency 'Dependency1'" \
-      "\n\ts.dependency 'Dependency2', ~>'1.0.0'" \
+      "\n\ts.dependency 'Dependency2', ~> '1.0.0'" \
       "\n" \
       "\n\ts.subspec 'Sub1' do |s|" \
       "\n\t\ts.source_files = [\"SourceCode/**/*.{swift}\", \"SourceCode/**/*.{h}\"]" \
@@ -44,7 +44,7 @@ RSpec.describe PodSpecBuilder do
       info.static_framework = true
       info.source_files = 'SourceCode/**/*.{swift}', 'SourceCode/**/*.{h}'
       info.add_dependency("Dependency1")
-      info.add_dependency("Dependency2","1.0.0")
+      info.add_dependency("Dependency2","~> '1.0.0'")
       info.add_subspec("Sub1",
                        ['SourceCode/**/*.{swift}', 'SourceCode/**/*.{h}'],
                        [{ name: "SDependency" }]

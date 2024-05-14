@@ -31,6 +31,7 @@ module Fastlane
         builder.static_framework = params[:static_framework]
         builder.vendored_frameworks = params[:vendored_frameworks]
         output = builder.build_pod_spec_string
+        FileUtils.mkdir_p params[:folder]
         File.write("#{params[:folder]}/#{params[:name]}.podspec", output)
 
       end

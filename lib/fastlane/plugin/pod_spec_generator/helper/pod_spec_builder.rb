@@ -109,8 +109,8 @@ class PodSpecBuilder
   def generate_dependencies(dependencies, allignment = "")
     dependencies.reduce(String.new) do |content, dep|
       dependency = "\n#{allignment}\ts.dependency '#{dep[:name]}'"
-      vers = dep[:version] ? "'#{dep[:version]}'" : nil
-      out = [dependency, vers].compact.join(", ~>")
+      vers = dep[:version] ? "#{dep[:version]}" : nil
+      out = [dependency, vers].compact.join(", ")
       content += "#{out}"
     end
   end
