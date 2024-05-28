@@ -13,8 +13,8 @@ describe Fastlane::Actions::PodSpecGeneratorAction do
       "\n\ts.source_files = [\"SourceCode/**/*.{swift}\", \"SourceCode/**/*.{h}\"]" \
       "\n\ts.summary = 'Summary'" \
       "\n\ts.swift_version = '5.9'" \
-      "\n\ts.vendored_frameworks = 'Framework'"\
       "\n\ts.version = 'Version'" \
+      "\n\ts.ios.vendored_frameworks = 'Framework'"\
       "\n" \
       "\n\ts.dependency 'Dependency1'" \
       "\n\ts.dependency 'Dependency2', = 1.0.0" \

@@ -42,6 +42,7 @@ class PodSpecBuilder
     [start_of_spec,
      podspec_content_setting_string,
      static_framework_string,
+     vendored_frameworks_string,
      generate_dependencies(@dependencies),
      subscpecs_string,
      generate_local_spm_dependencies(@spm_local_dependencies),
@@ -85,8 +86,13 @@ class PodSpecBuilder
     return "\ts.static_framework = true" if @static_framework
     nil
   end
+
+  def vendored_frameworks_string
+    return "\ts.ios.vendored_frameworks = '#{@vendored_frameworks}'" if @vendored_frameworks
+    nil
+  end
   def exclude(variable)
-    %w[@subscpecs @dependencies @spm_local_dependencies @static_framework].include? variable.to_s
+    %w[@subscpecs @dependencies @spm_local_dependencies @static_framework @vendored_frameworks].include? variable.to_s
   end
   def content(items)
     items.reject(&:empty?).reduce(String.new) do |content, item|
