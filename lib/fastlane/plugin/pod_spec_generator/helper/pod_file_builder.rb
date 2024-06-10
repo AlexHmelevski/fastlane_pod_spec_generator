@@ -4,17 +4,20 @@ class PodFileBuilder
   attr_writer :use_frameworks,
               :targets,
               :apply_local_spm_fix,
-              :platform
+              :platform,
+              :source_urls
 
   def initialize
     @use_frameworks = true
     @targets = []
     @apply_local_spm_fix = false
     @platform = nil
+    @source_urls = []
   end
 
   def build_pod_file_string
     [use_frameworks_string,
+     custom_sources,
      platform,
      apply_local_spm_fix_string,
      targets_string,
@@ -56,5 +59,12 @@ class PodFileBuilder
     return "use_frameworks!" if @use_frameworks
 
     return nil
+  end
+
+  def custom_sources
+    return nil if @source_urls.empty?
+
+    sources = @source_urls + ["https://cdn.cocoapods.org"]
+    sources.map { |s| "source '#{s}'" }.join("\n")
   end
 end

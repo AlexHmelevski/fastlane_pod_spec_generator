@@ -10,6 +10,7 @@ module Fastlane
         builder.apply_local_spm_fix = params[:apply_local_spm_fix]
         builder.targets = params[:targets]
         builder.use_frameworks = params[:use_frameworks]
+        builder.source_urls = params[:source_urls] || []
         if params[:platform]
           builder.platform = params[:platform].reduce([]) do |content, pair|
             content += [":#{pair[0]}", pair[1]]
@@ -65,7 +66,13 @@ module Fastlane
                                        description: "Platform",
                                        default_value: {ios: "14.0"},
                                        optional: true,
-                                       type: Hash)
+                                       type: Hash),
+          FastlaneCore::ConfigItem.new(key: :source_urls,
+                                       env_name: "POD_FILE_GENERATOR_SOURCE_URLS",
+                                       description: "Podspec source URLs",
+                                       default_value: [],
+                                       optional: true,
+                                       type: Array)
 
         ]
       end

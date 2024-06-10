@@ -54,7 +54,7 @@ describe Fastlane::Actions::PodFileGeneratorAction do
       expect(read_file_data).to eq(expected)
     end
 
-    it 'Generates podfil with no plugin' do
+    it 'Generates podfile with no plugin' do
       expected = "use_frameworks!\n" \
                  "target 'MyTarget' do\n" \
                  "\tpod 'Networking', ~> '1,2,3'\n\n" \
@@ -83,6 +83,41 @@ describe Fastlane::Actions::PodFileGeneratorAction do
               })
       expect(read_file_data).to eq(expected)
     end
+
+    it 'Generates podfile with custom sources' do
+      expected = "use_frameworks!\n" \
+                 "source 'my_url1'\n" \
+                 "source 'my_url2'\n" \
+                 "source 'https://cdn.cocoapods.org'\n" \
+                 "target 'MyTarget' do\n" \
+                 "\tpod 'Networking', ~> '1,2,3'\n\n" \
+                 "end\n" \
+                 "target 'MyTarget2' do\n" \
+                 "\tpod 'Networking2', ~> '1,2,3'\n\n" \
+                 "end\n"
+      sut.run({
+                use_frameworks: true,
+                folder: folder_path,
+                targets: [
+                  {
+                    name: "MyTarget",
+                    dependencies: [
+                      {name: "Networking", version: "~> '1,2,3'"}
+                    ]
+                  },
+                  {
+                    name: "MyTarget2",
+                    dependencies: [
+                      {name: "Networking2", version: "~> '1,2,3'"}
+                    ]
+                  }
+
+                ],
+                source_urls: ["my_url1", "my_url2"]
+              })
+      expect(read_file_data).to eq(expected)
+    end
+
   end
 
   def read_file_data
