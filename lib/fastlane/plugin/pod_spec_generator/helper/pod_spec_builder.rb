@@ -12,6 +12,7 @@ class PodSpecBuilder
               :subspecs,
               :swift_version,
               :source_files,
+              :resources,
               :source,
               :dependencies,
               :spm_local_dependencies,
@@ -28,6 +29,7 @@ class PodSpecBuilder
     @name = nil
     @dependencies = []
     @subscpecs = []
+    @resources = nil
     @source = nil
     @source_files = nil
     @swift_version = nil

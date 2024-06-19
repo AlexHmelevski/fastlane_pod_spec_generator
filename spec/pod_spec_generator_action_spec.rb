@@ -9,6 +9,7 @@ describe Fastlane::Actions::PodSpecGeneratorAction do
       "\n\ts.license = {:type=>\"MIT\", :file=>\"LICENSE\"}" \
       "\n\ts.name = 'Name'" \
       "\n\ts.platform = [:ios, \"13.0\"]" \
+      "\n\ts.resources = [\"SourceCode/**/*.{xcassets}\", \"SourceCode/**/*.{png}\"]" \
       "\n\ts.source = {:http=>\"my url\"}" \
       "\n\ts.source_files = [\"SourceCode/**/*.{swift}\", \"SourceCode/**/*.{h}\"]" \
       "\n\ts.summary = 'Summary'" \
@@ -51,6 +52,7 @@ describe Fastlane::Actions::PodSpecGeneratorAction do
                 homepage: "Homepage",
                 source: {:http=>"my url"},
                 platform: {:ios=>"13.0"},
+                resources: %w[SourceCode/**/*.{xcassets} SourceCode/**/*.{png}],
                 source_files: %w[SourceCode/**/*.{swift} SourceCode/**/*.{h}],
                 dependencies: [
                   { name: "Dependency1" },

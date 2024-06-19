@@ -22,6 +22,7 @@ module Fastlane
         builder.source_files = params[:source_files]
         builder.swift_version = params[:swift_version]
         builder.spm_local_dependencies = params[:spm_local_dependencies]
+        builder.resources = params[:resources]
         builder.platform = params[:platform].reduce([]) do |content, pair|
           content += pair
         end
@@ -98,6 +99,11 @@ module Fastlane
                                        optional: true),
           FastlaneCore::ConfigItem.new(key: :source_files,
                                        description: "Source Files",
+                                       default_value: [],
+                                       optional: true,
+                                       type: Array),
+          FastlaneCore::ConfigItem.new(key: :resources,
+                                       description: "Resource Files",
                                        default_value: [],
                                        optional: true,
                                        type: Array),
